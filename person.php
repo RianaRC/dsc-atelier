@@ -1,63 +1,34 @@
 <?php
-
 /**
- * Une classe pour representer une personne.
+ * Classe pour les personnages.
  */
 class Person
 {
-	public $name;
-	public $age;
-	public $gender;
-	public $health;
-	public $maritalStatus;
+    public $name;
+    public $weapons = [];
+    public $money = 100;
 
-    private $weapons;
-    private $money;
-
-	// $items = ["excalibur", "potion", "cape", "bouclier"];
-	// $items[] = "or";
-	// ["excalibur", "potion", "cape", "bouclier", "or"]
-	private $items;
-
-	public function __construct($name)
-	{
-		$this->name = $name;
-
-        $this->weapons = [];
-        $this->money = 500;
-	}
-
-    public function getWeapons()
+    public function __construct(string $name)
     {
-        return $this->weapons;
-    }
-
-    public function getMoney()
-    {
-        return $this->money;
+        $this->name = $name;
+        $this->health = 100;
     }
 
     public function buyWeapon(Weapon $weapon)
     {
-        if ($this->money < $weapon->price) {
-            return "Solde insuffisants";
-        }
-
-        $this->money -= $weapon->price;
-        $this->weapons[] = $weapon;
-        return true;
+        array_push($this->weapons, $weapon);
+        $this->money = $this->money - $weapon->price; 
     }
 
     public function attack(Person $person, Weapon $weapon = null)
     {
-        if ($weapon !== null) {
-            if (in_array($weapon, $this->weapon)) {
+        if (!empty($weapon)) {            
+            if(in_array($weapon, $this->weapons)){
                 $person->health -= $weapon->damage;
-            } else {
-                return false;
             }
-        } else {
-            $person->health -= 2;
+        }else {
+            $person->health -= 10;
         }
     }
+
 }
